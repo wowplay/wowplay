@@ -1,0 +1,90 @@
+
+	
+二、action统一继承common包中的baseAction
+	baseAction只可以添加需要用到的Service实体,分页参数;
+	其余的需要定义的与前后台交互的参数请定义在对应的action实体;
+	继承baseAction时<T>泛型请根据需要自己定义;
+	baseAction中有一个公共的getModel()方法，在action中如果需要调用自己泛的实体
+	直接调用getModel()方法，不要自己去new.
+	
+三、注释格式
+	1.类统一注释格式：
+	/**
+	 *	@ClassName: 类名
+	 *	@Description: 描述
+	 *	@author: XXX
+	 *  @date: 创建时间
+	 */
+	 
+	2.方法统一注释格式：
+	/**此处是方法注释*/
+	
+	3.字段统一注释格式：
+	//此处是字段注释格式
+	
+四、代码层次规范
+	* action中只能调用service接口，service实现类只能调用dao接口，
+		dao接口只能调用baseDao接口（不允许直接调实现类）
+	*service解口:方法必须写注释。
+	*service实现类:只允许存在逻辑代码。
+	*dao接口:方法必须写注释。
+	*dao实现类:用来写HQL以及解析返回值,不应存在功能逻辑，
+			dao如果调用hibernateTempnate的方法请通过间接调用baseDao,
+			如果baseDao中方法不够，可以自己继续在baseDao中定义。
+	
+五、配置文件规范
+	1.spring-basic中的基础配置不要再动，另外新定义的bean在spring-beans.xml中，加上类名注释。
+	2.struts.xml中的返回值格式请根据注释的分类来写,
+		返回同一界面不要定义多个返回值，一个就够了,所有的action共用result。
+
+六、开发环境和字符集：
+    1.字符集：utf-8；采用常量定义格式放在常量类中；
+    2.lib统一放在lib目录下；
+    3.开发环境jdk6.0；java ee 6；
+    4.数据库：oracle；
+    5.IDE：eclipse，idea版本任选；
+    6.版本控制工具：git
+    7.项目管理工具：maven
+
+七、类体方法常量等等定义规范：
+    1.getter和setter方法由IDE自动生成，放在所有逻辑方法之后；
+    2.方法命名规则：xxxYyyZzz()首字母小写驼峰标识；
+    3.变量定义规则：xxxYyyZzz，统一用private声明；
+    4.util中的类统一用static声明必要时用final；
+    5.常量类：定义常量采用大写字母，并用static、final声明；
+
+八、类命名规则：
+   1.采用驼峰标识；
+   2.接口定义遵循正常人思维；
+   3.各层命名规则：
+       1.action：XxxAction；
+       2.service：XxxService；
+       3.service.impl：XxxServiceImpl；
+       4.dao：XxxDao；
+       5.dao.impl：XxxDaoImpl；
+       6.model：XxxModel；
+       7.util：Xxx（Util）可选；
+
+九.	配置文件命名规范：
+   1.spring框架
+   Spring实现对struts的action类的管理，对于每个不同模块创建一个spring的配置文件，其命名为：spring-模块名.xml。如：对user创建一个spring-user.xml配置文件，然后在applicationContext.xml里面import这个进去。
+   2.struts2框架
+   为了防止struts的配置文件过于庞大，采用每个模块创建一个struts的配置文件，其命名为：struts-模块名.xml。如：对user创建一个struts-user.xml的配置文件，然后在struts.xml里面include这个配置文件
+   action的请求路径
+   	统一为：*_*.action;
+   	第一个*表示action的名字首字母小写;
+   	第二个*表示action中对应的方法名;
+   	struts.xml不要去配置了，已经统一配置完毕，需要另外用到自己去配。
+   	例：访问JobAction类中的queryAll方法,访问路径为：job_queryAll.action.
+   3.hibernate框架
+   对于每个对象，创建一个hibernate的配置文件，其命名为：对象名-hbm.xml，如：user，创建的配置文件为：User-hbm.xml。然后在applicationContext.xml里面进行管理
+   4.	配置文件书写规范：
+        1.struts.xml采用一个action类对应一个action，一个模块，一个package，尽量避免使用带*号的配置，保证可读性；
+        2.spring用来管理struts的action，一个模块要对应一个spring的配置文件。如：对于user模块，要有一个对应的spring配置文件，spring-user.xml
+        3.hibernate对于对象的配置文件，变量名称要一致
+
+十.	配置文件路径：
+     1.	struts-模块名.xml放在resources/struts下面；
+     2.sping-模块名.xml放在resources/spring下面
+     3.对象名.hbm.xml放在resources/hibernate下面
+     4.	其他放到resources目录；
